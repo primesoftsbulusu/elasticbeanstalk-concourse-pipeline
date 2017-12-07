@@ -7,14 +7,13 @@ image_resource:
 
 inputs:
   - name: pipeline-src
-  - name: api-src
-  - name: api-version
+  - name: demo-app-src
 
 outputs:
   - name: build
 
 caches:
-  - path: .m2
+  - path: demo-app-src/.m2
 
 run:
-  path: pipeline-src/api/tasks/build.sh
+  path: pipeline-src/tasks/build/build.sh

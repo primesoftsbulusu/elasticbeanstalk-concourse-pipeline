@@ -5,34 +5,36 @@ set -u
 set -x
 set -o pipefail
 
-pushd ./api-artifact
-
-#
-# Check that the application name & environment are set
-#
-if [ ! -n "${EB_APPLICATION}" ]; then
-    echo "The EB_APPLICATION environment variable must be set"
+# Check that the application environment is set
+if [ ! -n "${ENVIRONMENT_NAME}" ]; then
+    echo "The ENVIRONMENT_NAME environment variable must be set"
     exit 1
 fi
 
-if [ ! -n "${EB_ENVIRONMENT}" ]; then
-    echo "The EB_ENVIRONMENT environment variable must be set"
-    exit 1
-fi
-
-
 #
-# Get build version
+# Get the build version
 #
-BUILD_VERSION_FILE="./version"
+BUILD_VERSION_FILE="./demo-app-artifact/version"
 if [ ! -f ${BUILD_VERSION_FILE} ]; then
     echo "${BUILD_VERSION_FILE} does not exists"
     exit 1
 fi
-VERSION=$(cat ${BUILD_VERSION_FILE})
+BUILD_VERSION=$(cat ${BUILD_VERSION_FILE})
 
-eb init ${EB_APPLICATION} -r "${EB_REGION:-eu-west-1}"
-eb deploy ${EB_ENVIRONMENT} --label "${VERSION}"
+#
+# Get the config version
+#
+CONFIG_VERSION_FILE="./demo-app-config/version"
+if [ ! -f ${CONFIG_VERSION_FILE} ]; then
+    echo "${CONFIG_VERSION_FILE} does not exists"
+    exit 1
+fi
+CONFIG_VERSION=$(cat ${CONFIG_VERSION_FILE})
 
+cp ./demo-app-artifact/*.jar ./pipeline-src/eb-config/demo-app.jar
+cp ./demo-app-config/*.yml ./pipeline-src/eb-config/application.yml
+
+pushd ./pipeline-src/eb-config
+eb deploy ${ENVIRONMENT_NAME} --label "${BUILD_VERSION}:${CONFIG_VERSION}"
 popd
 

@@ -6,18 +6,74 @@ resources:
       uri: https://github.com/pmilianbeto/elasticbeanstalk-concourse-pipeline.git
       branch: master
 
+  - name: demo-app-src
+    type: git
+    source:
+      uri: https://github.com/pmilianbeto/elasticbeanstalk-demo-app.git
+      branch: master
+
+  - name: demo-app-artifact
+    type: s3
+    source:
+      bucket: demo-app-ops
+      region_name: eu-west-1
+      versioned_file: demo-app.jar
+      access_key_id: {{aws-key-id}}
+      secret_access_key: {{aws-access-key}}
+
+  - name: demo-app-staging-config
+    type: s3
+    source:
+      bucket: demo-app-ops
+      region_name: eu-west-1
+      versioned_file: demo-app-staging.yml
+      access_key_id: {{aws-key-id}}
+      secret_access_key: {{aws-access-key}}
+
 jobs:
-  - name: create-staging-env
+
+  - name: build-demo-app
+    build_logs_to_retain: 30
     plan:
-      - get: pipeline-src
+      - aggregate:
+        - get: pipeline-src
+        - get: demo-app-src
+          trigger: true
+      - task: build
+        file: pipeline-src/tasks/build/build.yml
+      - put: demo-app-artifact
+        params:
+          file: build/*.jar
+          name: demo-app.jar
+
+  - name: deploy-staging-demo-app
+    serial: true
+    plan:
+      - aggregate:
+        - get: pipeline-src
+        - get: demo-app-artifact
+          passed:
+            - build-demo-app
+          trigger: true
+        - get: demo-app-config
+          resource: demo-app-staging-config
+          trigger: true
       - task: create-env
         file: pipeline-src/tasks/create-env/create-env.yml
         params:
           ENVIRONMENT_NAME: demo-app-staging
           CNAME: demo-app-staging
-
+          AWS_ACCESS_KEY_ID: {{aws-key-id}}
+          AWS_SECRET_ACCESS_KEY: {{aws-access-key}}
+      - task: deploy
+        file: pipeline-src/tasks/deploy/deploy.yml
+        params:
+          ENVIRONMENT_NAME: demo-app-staging
+          AWS_ACCESS_KEY_ID: {{aws-key-id}}
+          AWS_SECRET_ACCESS_KEY: {{aws-access-key}}
 
 groups:
-  - name: Elastic Beanstalk
+  - name: demo-app
     jobs:
-      - create-staging-env
+      - build-demo-app
+      - deploy-staging-demo-app

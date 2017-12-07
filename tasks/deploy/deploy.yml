@@ -7,7 +7,8 @@ image_resource:
 
 inputs:
   - name: pipeline-src
-  - name: api-artifact
+  - name: demo-app-artifact
+  - name: demo-app-config
 
 run:
-  path: pipeline-src/api/tasks/deploy.sh
+  path: pipeline-src/tasks/deploy/deploy.sh
