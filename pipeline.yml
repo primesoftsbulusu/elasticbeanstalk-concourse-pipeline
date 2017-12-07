@@ -1,0 +1,23 @@
+---
+resources:
+  - name: pipeline-src
+    type: git
+    source:
+      uri: https://github.com/pmilianbeto/elasticbeanstalk-concourse-pipeline.git
+      branch: master
+
+jobs:
+  - name: create-staging-env
+    plan:
+      - get: pipeline-src
+      - task: create-env
+        file: pipeline-src/tasks/create-env/create-env.yml
+        params:
+          ENVIRONMENT_NAME: demo-app-staging
+          CNAME: demo-app-staging
+
+
+groups:
+  - name: Elastic Beanstalk
+    jobs:
+      - create-staging-env
