@@ -1,0 +1,15 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source: { repository: betomorrow/docker-awsebcli }
+
+inputs:
+  - name: pipeline-src
+
+outputs:
+  - name: bundle
+
+run:
+  path: pipeline-src/tasks/create-env/create-env.sh
