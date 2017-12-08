@@ -31,10 +31,9 @@ if [ ! -f ${CONFIG_VERSION_FILE} ]; then
 fi
 CONFIG_VERSION=$(cat ${CONFIG_VERSION_FILE})
 
-cp ./demo-app-artifact/*.jar ./pipeline-src/eb-config/demo-app.jar
-cp ./demo-app-config/*.yml ./pipeline-src/eb-config/application.yml
-
-pushd ./pipeline-src/eb-config
+pushd ./bundle
+cp ../demo-app-artifact/*.jar demo-app.jar
+cp ../demo-app-config/*.yml application.yml
 eb deploy ${ENVIRONMENT_NAME} --label "${BUILD_VERSION}:${CONFIG_VERSION}"
 popd
 

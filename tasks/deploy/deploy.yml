@@ -9,6 +9,7 @@ inputs:
   - name: pipeline-src
   - name: demo-app-artifact
   - name: demo-app-config
+  - name: bundle
 
 run:
   path: pipeline-src/tasks/deploy/deploy.sh

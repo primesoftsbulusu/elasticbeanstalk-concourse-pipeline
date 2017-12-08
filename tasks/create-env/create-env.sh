@@ -5,13 +5,23 @@ set -u
 set -x
 set -o pipefail
 
-# Check that the application environment is set
+# Check that the environment variables are set
+if [ ! -n "${APPLICATION_NAME}" ]; then
+    echo "The APPLICATION_NAME environment variable must be set"
+    exit 1
+fi
+
 if [ ! -n "${ENVIRONMENT_NAME}" ]; then
     echo "The ENVIRONMENT_NAME environment variable must be set"
     exit 1
 fi
 
-pushd ./pipeline-src/eb-config
+
+pushd ./bundle
+
+eb init ${APPLICATION_NAME} \
+    -p "java-8" \
+    --region "eu-west-1"
 
 # Do not create the environment if it already exists
 if eb list | grep -w "${ENVIRONMENT_NAME}"; then
@@ -19,10 +29,13 @@ if eb list | grep -w "${ENVIRONMENT_NAME}"; then
     exit 0
 fi
 
-eb init
-eb create "${ENVIRONMENT_NAME}" \
+echo "Creating the environment ${ENVIRONMENT_NAME}"
+
+eb create ${ENVIRONMENT_NAME} \
     --cname "${CNAME:-$ENVIRONMENT_NAME}" \
-    --cfg "${ENVIRONMENT_NAME}" \
+    --single \
+    --instance_type "t2.micro" \
+    --envvars "SERVER_PORT=5000" \
     --sample
 
 popd

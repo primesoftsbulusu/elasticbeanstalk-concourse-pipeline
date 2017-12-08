@@ -8,5 +8,8 @@ image_resource:
 inputs:
   - name: pipeline-src
 
+outputs:
+  - name: bundle
+
 run:
   path: pipeline-src/tasks/create-env/create-env.sh
