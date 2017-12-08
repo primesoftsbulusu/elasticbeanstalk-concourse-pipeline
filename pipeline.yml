@@ -31,7 +31,6 @@ resources:
       secret_access_key: {{aws-access-key}}
 
 jobs:
-
   - name: build-demo-app
     build_logs_to_retain: 30
     plan:
@@ -61,14 +60,14 @@ jobs:
         file: pipeline-src/tasks/create-env/create-env.yml
         params:
           APPLICATION_NAME: demo-app
-          ENVIRONMENT_NAME: demo-app
-          CNAME: demo-app
+          ENVIRONMENT_NAME: demo-app-env
+          CNAME: demo-app-env
           AWS_ACCESS_KEY_ID: {{aws-key-id}}
           AWS_SECRET_ACCESS_KEY: {{aws-access-key}}
       - task: deploy
         file: pipeline-src/tasks/deploy/deploy.yml
         params:
-          ENVIRONMENT_NAME: demo-app
+          ENVIRONMENT_NAME: demo-app-env
           AWS_ACCESS_KEY_ID: {{aws-key-id}}
           AWS_SECRET_ACCESS_KEY: {{aws-access-key}}
 
