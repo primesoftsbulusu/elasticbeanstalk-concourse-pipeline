@@ -46,7 +46,7 @@ jobs:
           file: build/*.jar
           name: demo-app.jar
 
-  - name: deploy-staging-demo-app
+  - name: deploy-demo-app
     serial: true
     plan:
       - aggregate:
@@ -76,4 +76,4 @@ groups:
   - name: demo-app
     jobs:
       - build-demo-app
-      - deploy-staging-demo-app
+      - deploy-demo-app
