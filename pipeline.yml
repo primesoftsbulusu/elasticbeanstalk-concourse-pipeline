@@ -21,6 +21,15 @@ resources:
       access_key_id: {{aws-key-id}}
       secret_access_key: {{aws-access-key}}
 
+  - name: demo-app-config
+    type: s3
+    source:
+      bucket: demo-app-ops
+      region_name: eu-west-1
+      versioned_file: demo-app.yml
+      access_key_id: {{aws-key-id}}
+      secret_access_key: {{aws-access-key}}
+
 jobs:
   - name: build-demo-app
     build_logs_to_retain: 30
@@ -44,6 +53,8 @@ jobs:
         - get: demo-app-artifact
           passed:
             - build-demo-app
+          trigger: true
+        - get: demo-app-config
           trigger: true
       - task: create-env
         file: pipeline-src/tasks/create-env/create-env.yml

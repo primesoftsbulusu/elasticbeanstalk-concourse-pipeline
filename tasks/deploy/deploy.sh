@@ -21,6 +21,22 @@ if [ ! -f ${BUILD_VERSION_FILE} ]; then
 fi
 BUILD_VERSION=$(cat ${BUILD_VERSION_FILE})
 
+#
+# Get the config version
+#
+CONFIG_VERSION_FILE="./demo-app-config/version"
+if [ ! -f ${CONFIG_VERSION_FILE} ]; then
+    echo "${CONFIG_VERSION_FILE} does not exists"
+    exit 1
+fi
+CONFIG_VERSION=$(cat ${CONFIG_VERSION_FILE})
+
+pushd ./bundle
+cp ../demo-app-artifact/*.jar demo-app.jar
+cp ../demo-app-config/*.yml application.yml
+eb deploy ${ENVIRONMENT_NAME} --label "${BUILD_VERSION}:${CONFIG_VERSION}"
+popd
+
 pushd ./bundle
 cp ../demo-app-artifact/*.jar demo-app.jar
 eb deploy ${ENVIRONMENT_NAME} --label "${BUILD_VERSION}"

@@ -8,6 +8,7 @@ image_resource:
 inputs:
   - name: pipeline-src
   - name: demo-app-artifact
+  - name: demo-app-config
   - name: bundle
 
 run:
