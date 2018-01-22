@@ -8,7 +8,6 @@ image_resource:
 inputs:
   - name: pipeline-src
   - name: demo-app-artifact
-  - name: bundle
 
 run:
   path: pipeline-src/tasks/deploy/deploy.sh

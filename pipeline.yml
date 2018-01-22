@@ -18,8 +18,8 @@ resources:
       bucket: demo-app-ops
       region_name: eu-west-1
       versioned_file: demo-app.jar
-      access_key_id: {{aws-key-id}}
-      secret_access_key: {{aws-access-key}}
+      access_key_id: ((aws-key-id))
+      secret_access_key: ((aws-access-key))
 
 jobs:
   - name: build-demo-app
@@ -46,19 +46,13 @@ jobs:
             - build-demo-app
           trigger: true
       - task: create-env
-        file: pipeline-src/tasks/create-env/create-env.yml
+        file: pipeline-src/tasks/deploy/deploy.yml
         params:
           APPLICATION_NAME: demo-app
           ENVIRONMENT_NAME: demo-app-env
           CNAME: demo-app-env
-          AWS_ACCESS_KEY_ID: {{aws-key-id}}
-          AWS_SECRET_ACCESS_KEY: {{aws-access-key}}
-      - task: deploy
-        file: pipeline-src/tasks/deploy/deploy.yml
-        params:
-          ENVIRONMENT_NAME: demo-app-env
-          AWS_ACCESS_KEY_ID: {{aws-key-id}}
-          AWS_SECRET_ACCESS_KEY: {{aws-access-key}}
+          AWS_ACCESS_KEY_ID: ((aws-key-id))
+          AWS_SECRET_ACCESS_KEY: ((aws-access-key))
 
 groups:
   - name: demo-app

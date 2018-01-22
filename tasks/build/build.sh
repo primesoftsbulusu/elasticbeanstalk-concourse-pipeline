@@ -1,9 +1,6 @@
 #!/bin/bash
 
-set -e
-set -u
-set -x
-set -o pipefail
+set -euxo pipefail
 
 pushd demo-app-src/
 

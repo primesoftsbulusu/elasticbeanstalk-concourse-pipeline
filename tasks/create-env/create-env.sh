@@ -1,9 +1,6 @@
 #!/bin/bash
 
-set -e
-set -u
-set -x
-set -o pipefail
+set -euxo pipefail
 
 # Check that the environment variables are set
 if [ ! -n "${APPLICATION_NAME}" ]; then
