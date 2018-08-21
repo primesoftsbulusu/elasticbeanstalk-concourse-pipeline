@@ -17,8 +17,8 @@ resources:
       bucket: demo-app-ops
       region_name: ap-south-1
       versioned_file: demo-app.jar
-      access_key_id: AKIAJJVWJYLJZORRJ4WQ
-      secret_access_key: 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
+      access_key_id: <>
+      secret_access_key: <>
 
 jobs:
   - name: build-demo-app
@@ -49,8 +49,8 @@ jobs:
           APPLICATION_NAME: demo-app
           ENVIRONMENT_NAME: demo-app-env
           CNAME: demo-app-env
-          AWS_ACCESS_KEY_ID: AKIAJJVWJYLJZORRJ4WQ
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: <>
+          AWS_SECRET_ACCESS_KEY: <>
 
 groups:
   - name: demo-app
