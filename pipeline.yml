@@ -3,23 +3,22 @@ resources:
   - name: pipeline-src
     type: git
     source:
-      uri: https://github.com/pmilianbeto/elasticbeanstalk-concourse-pipeline.git
+      uri: https://github.com/primesoftsbulusu/elasticbeanstalk-concourse-pipeline.git
       branch: master
 
   - name: demo-app-src
     type: git
     source:
-      uri: https://github.com/pmilianbeto/elasticbeanstalk-demo-app.git
+      uri: https://github.com/primesoftsbulusu/elasticbeanstalk-demo-app.git
       branch: master
-
   - name: demo-app-artifact
     type: s3
     source:
       bucket: demo-app-ops
-      region_name: eu-west-1
+      region_name: ap-south-1
       versioned_file: demo-app.jar
-      access_key_id: ((aws-key-id))
-      secret_access_key: ((aws-access-key))
+      access_key_id: AKIAJJVWJYLJZORRJ4WQ
+      secret_access_key: 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
 
 jobs:
   - name: build-demo-app
@@ -35,7 +34,6 @@ jobs:
         params:
           file: build/demo-app.jar
           name: demo-app.jar
-
   - name: deploy-demo-app
     serial: true
     plan:
@@ -45,14 +43,14 @@ jobs:
           passed:
             - build-demo-app
           trigger: true
-      - task: create-env
+      - task: deploy
         file: pipeline-src/tasks/deploy/deploy.yml
         params:
           APPLICATION_NAME: demo-app
           ENVIRONMENT_NAME: demo-app-env
           CNAME: demo-app-env
-          AWS_ACCESS_KEY_ID: ((aws-key-id))
-          AWS_SECRET_ACCESS_KEY: ((aws-access-key))
+          AWS_ACCESS_KEY_ID: AKIAJJVWJYLJZORRJ4WQ
+          AWS_SECRET_ACCESS_KEY: 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
 
 groups:
   - name: demo-app
