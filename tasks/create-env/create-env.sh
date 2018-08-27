@@ -18,7 +18,7 @@ pushd ./bundle
 
 eb init ${APPLICATION_NAME} \
     -p "java-8" \
-    --region "us-east-2"
+    --region "us-east-1"
 
 # Do not create the environment if it already exists
 if eb list | grep -w "${ENVIRONMENT_NAME}"; then

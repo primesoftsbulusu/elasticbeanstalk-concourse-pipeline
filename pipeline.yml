@@ -15,7 +15,7 @@ resources:
     type: s3
     source:
       bucket: dev-app-ops
-      region_name: us-east-2
+      region_name: us-east-1
       versioned_file: demo-app.jar
       access_key_id: ((AWS-KEY)) 
       secret_access_key: ((AWS-SECRET))
