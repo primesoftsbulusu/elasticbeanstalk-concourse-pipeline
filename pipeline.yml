@@ -3,19 +3,19 @@ resources:
   - name: pipeline-src
     type: git
     source:
-      uri: https://github.com/kolliashokkumar/elasticbeanstalk-concourse-pipeline.git
+      uri: https://github.com/primesoftsbulusu/elasticbeanstalk-concourse-pipeline.git
       branch: master
 
   - name: demo-app-src
     type: git
     source:
-      uri: https://github.com/kolliashokkumar/elasticbeanstalk-demo-app.git
+      uri: https://github.com/primesoftsbulusu/elasticbeanstalk-demo-app.git
       branch: master
   - name: demo-app-artifact
     type: s3
     source:
-      bucket: demo-app-ops
-      region_name: ap-south-1
+      bucket: dev-app-ops
+      region_name: us-east-2
       versioned_file: demo-app.jar
       access_key_id: ((AWS-KEY)) 
       secret_access_key: ((AWS-SECRET))

@@ -29,7 +29,7 @@ cp ../demo-app-artifact/*.jar demo-app.jar
 
 eb init ${APPLICATION_NAME} \
     -p "java-8" \
-    --region "ap-south-1"
+    --region "us-east-2"
 
 
 # Create the environment if it doesn't exist
