@@ -3,13 +3,13 @@ resources:
   - name: pipeline-src
     type: git
     source:
-      uri: https://github.com/primesoftsbulusu/elasticbeanstalk-concourse-pipeline.git
+      uri: https://github.com/kolliashokkumar/elasticbeanstalk-concourse-pipeline.git
       branch: master
 
   - name: demo-app-src
     type: git
     source:
-      uri: https://github.com/primesoftsbulusu/elasticbeanstalk-demo-app.git
+      uri: https://github.com/kolliashokkumar/elasticbeanstalk-demo-app.git
       branch: master
   - name: demo-app-artifact
     type: s3
@@ -17,8 +17,9 @@ resources:
       bucket: demo-app-ops
       region_name: ap-south-1
       versioned_file: demo-app.jar
-      access_key_id: <>
-      secret_access_key: <>
+      access_key_id: ((AWS-KEY)) 
+      secret_access_key: ((AWS-SECRET))
+
 
 jobs:
   - name: build-demo-app
@@ -49,8 +50,8 @@ jobs:
           APPLICATION_NAME: demo-app
           ENVIRONMENT_NAME: demo-app-env
           CNAME: demo-app-env
-          AWS_ACCESS_KEY_ID: <>
-          AWS_SECRET_ACCESS_KEY: <>
+          AWS_ACCESS_KEY_ID: ((AWS-KEY))
+          AWS_SECRET_ACCESS_KEY: ((AWS-SECRET))
 
 groups:
   - name: demo-app
